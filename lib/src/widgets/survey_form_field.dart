@@ -8,7 +8,7 @@ class SurveyFormField extends StatelessWidget {
   final FormFieldValidator<List<String>>? validator;
   final AutovalidateMode? autovalidateMode;
   final Widget Function(FormFieldState<List<String>> state) builder;
-  SurveyFormField({
+  const SurveyFormField({
     Key? key,
     required this.question,
     this.onSaved,

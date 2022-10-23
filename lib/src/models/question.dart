@@ -16,8 +16,8 @@ class Question extends Equatable {
       Map<String, List<Question>?>? answerChoices,
       this.isMandatory = false,
       List<String>? answers})
-      : this.answers = answers ?? [],
-        this.answerChoices = answerChoices ?? {};
+      : answers = answers ?? [],
+        answerChoices = answerChoices ?? {};
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);

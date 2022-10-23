@@ -42,7 +42,7 @@ class QuestionCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyText1,
                           children: question2.isMandatory
                               ? [
-                                  TextSpan(
+                                  const TextSpan(
                                       text: "*",
                                       style: TextStyle(color: Colors.red))
                                 ]
@@ -64,7 +64,7 @@ class QuestionCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         state.errorText!,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                     )
                 ],

@@ -93,10 +93,11 @@ class MultipleChoiceAnswer extends StatefulWidget {
 }
 
 class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
-  List<String> _answers = [];
+  late List<String> _answers;
 
   @override
   void initState() {
+    _answers = [];
     _answers.addAll(widget.question2.answers);
     super.initState();
   }
