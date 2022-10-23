@@ -7,6 +7,7 @@ class SurveyFormField extends StatelessWidget {
   final FormFieldSetter<List<String>>? onSaved;
   final FormFieldValidator<List<String>>? validator;
   final AutovalidateMode? autovalidateMode;
+  final String? defaultErrorText;
   final Widget Function(FormFieldState<List<String>> state) builder;
   const SurveyFormField({
     Key? key,
@@ -15,6 +16,7 @@ class SurveyFormField extends StatelessWidget {
     this.validator,
     this.autovalidateMode,
     required this.builder,
+    this.defaultErrorText,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class SurveyFormField extends StatelessWidget {
         onSaved: onSaved,
         validator: (validator == null && question.isMandatory)
             ? (List<String>? answer) {
-                if (answer!.isEmpty) return "This field is mandatory*";
+                if (answer!.isEmpty) return defaultErrorText;
                 return null;
               }
             : validator,

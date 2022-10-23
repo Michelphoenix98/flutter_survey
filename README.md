@@ -4,9 +4,10 @@
 [![Codemagic build status](https://api.codemagic.io/apps/60a577211b2a304fc2cd4562/60a577211b2a304fc2cd4561/status_badge.svg)](https://codemagic.io/apps/60a577211b2a304fc2cd4562/60a577211b2a304fc2cd4561/latest_build)
 [![Coverage Status](https://coveralls.io/repos/github/Michelphoenix98/conditional_questions/badge.svg?branch=master)](https://coveralls.io/github/Michelphoenix98/conditional_questions?branch=master)
 
-A simple yet powerful package that handles the creation and state of a dynamic questionnaire/research survey with conditional questions.
+A simple yet powerful package that handles the creation of a dynamic questionnaire/research survey with conditional questions.
 Have you ever wanted to implement a form/questionnaire/survey like the ones you see on Google forms?
 Have you ever wanted to implement conditional questions that show or hide the questions that follow, based on the user's input?
+This package helps you build data collection forms hassle-free.
 
 
 
@@ -23,7 +24,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-    flutter_survey: '^1.0.0'
+    flutter_survey: '^0.0.1'
 ```
 
 
@@ -60,130 +61,87 @@ The answer to this question can be typed in by the user, single line or multilin
  ```Dart
  Question(
   question: "What is your name?",
-  validate:(field){
-     if (field.isEmpty) return "Field cannot be empty";
-          return null;
-             }
-         )
+)
  ```
-### PolarQuestions
-This is an instance of a Closed-Ended question where the answer is limited to a set of pre-defined choices.
-The answer list provided to this instance is rendered as a set of Radio buttons.
-   ```Dart  
-      PolarQuestion(
-          question: "Have you made any donations in the past?",
-          answers: ["Yes", "No"],
-          isMandatory: true,
-                   )
-   ```     
-### NestedQuestions
-This is an instance of a Closed-Ended question where the answer is limited to a set of pre-defined choices.
-But they are slightly different from PolarQuestions. They can hold or 'nest' other questions.
-The nested questions or the children are associated to a particular answer of the parent question.
-They are dynamically shown depending on the selected choice.
- ```Dart
-  NestedQuestion(
-        question: "The series will depend on your answer",
-        answers: ["Yes", "No"],
-        children: {
-          'Yes': [
-            PolarQuestion(
-                question: "Have you ever taken medication for H1n1?",
-                answers: ["Yes", "No"]),
-            PolarQuestion(
-                question: "Have you ever taken medication for Rabies?",
-                answers: ["Yes", "No"]),
-            Question(
-              question: "Comments",
-            ),
-          ],
-          'No': [
-            NestedQuestion(
-                question: "Have you sustained any injuries?",
-                answers: [
-                  "Yes",
-                  "No"
-                ],
-                children: {
-                  'Yes': [
-                    PolarQuestion(
-                        question: "Did it result in a disability?",
-                        answers: ["Yes", "No", "I prefer not to say"]),
-                  ],
-                  'No': [
-                    PolarQuestion(
-                        question:
-                            "Have you ever been infected with chicken pox?",
-                        answers: ["Yes", "No"]),
-                  ]
-                }),
-          ],
-        },
-      )
- ```
+
 ### A full question structure represented as a List:
 ```Dart
-
-  List<Question> questions() {
-    return [
-      Question(
-        question: "What is your name?",
-        //isMandatory: true,
-        validate: (field) {
-          if (field.isEmpty) return "Field cannot be empty";
-          return null;
-        },
-      ),
-      PolarQuestion(
-          question: "Have you made any donations in the past?",
-          answers: ["Yes", "No"],
-          isMandatory: true),
-      PolarQuestion(
-          question: "In the last 3 months have you had a vaccination?",
-          answers: ["Yes", "No"]),
-      PolarQuestion(
-          question: "Have you ever taken medication for HIV?",
-          answers: ["Yes", "No"]),
-      NestedQuestion(
-        question: "The series will depend on your answer",
-        answers: ["Yes", "No"],
-        children: {
-          'Yes': [
-            PolarQuestion(
-                question: "Have you ever taken medication for H1n1?",
-                answers: ["Yes", "No"]),
-            PolarQuestion(
-                question: "Have you ever taken medication for Rabies?",
-                answers: ["Yes", "No"]),
-            Question(
-              question: "Comments",
-            ),
-          ],
-          'No': [
-            NestedQuestion(
-                question: "Have you sustained any injuries?",
-                answers: [
-                  "Yes",
-                  "No"
-                ],
-                children: {
-                  'Yes': [
-                    PolarQuestion(
-                        question: "Did it result in a disability?",
-                        answers: ["Yes", "No", "I prefer not to say"]),
-                  ],
-                  'No': [
-                    PolarQuestion(
-                        question:
-                            "Have you ever been infected with chicken pox?",
-                        answers: ["Yes", "No"]),
-                  ]
-                }),
-          ],
-        },
-      )
-    ];
-  }
+ List<Question> _initialData = [
+  Question(
+    isMandatory: true,
+    question: 'Do you like drinking coffee?',
+    answerChoices: {
+      "Yes": [
+        Question(
+            singleChoice: false,
+            question: "What are the brands that you've tried?",
+            answerChoices: {
+              "Nestle": null,
+              "Starbucks": null,
+              "Coffee Day": [
+                Question(
+                  question: "Did you enjoy visiting Coffee Day?",
+                  isMandatory: true,
+                  answerChoices: {
+                    "Yes": [
+                      Question(
+                        question: "Please tell us why you like it",
+                      )
+                    ],
+                    "No": [
+                      Question(
+                        question: "Please tell us what went wrong",
+                      )
+                    ],
+                  },
+                )
+              ],
+            })
+      ],
+      "No": [
+        Question(
+          question: "Do you like drinking Tea then?",
+          answerChoices: {
+            "Yes": [
+              Question(
+                  question: "What are the brands that you've tried?",
+                  answerChoices: {
+                    "Nestle": null,
+                    "ChaiBucks": null,
+                    "Indian Premium Tea": [
+                      Question(
+                        question: "Did you enjoy visiting IPT?",
+                        answerChoices: {
+                          "Yes": [
+                            Question(
+                              question: "Please tell us why you like it",
+                            )
+                          ],
+                          "No": [
+                            Question(
+                              question: "Please tell us what went wrong",
+                            )
+                          ],
+                        },
+                      )
+                    ],
+                  })
+            ],
+            "No": null,
+          },
+        )
+      ],
+    },
+  ),
+  Question(
+      question: "What age group do you fall in?",
+      isMandatory: true,
+      answerChoices: const {
+        "18-20": null,
+        "20-30": null,
+        "Greater than 30": null,
+      })
+];
 ```
 ### Pass the list of questions to the ConditionalQuestions Widget.
 This is the main widget that handles the form.

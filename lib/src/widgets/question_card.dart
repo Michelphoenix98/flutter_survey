@@ -10,18 +10,21 @@ class QuestionCard extends StatelessWidget {
   final FormFieldSetter<List<String>>? onSaved;
   final FormFieldValidator<List<String>>? validator;
   final AutovalidateMode? autovalidateMode;
+  final String? defaultErrorText;
   const QuestionCard(
       {Key? key,
       required this.question2,
       required this.update,
       this.onSaved,
       this.validator,
-      this.autovalidateMode})
+      this.autovalidateMode,
+      this.defaultErrorText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SurveyFormField(
+        defaultErrorText: defaultErrorText,
         question: question2,
         onSaved: onSaved,
         validator: validator,

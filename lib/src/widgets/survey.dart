@@ -9,7 +9,14 @@ class Survey extends StatefulWidget {
   final List<Question> initialData;
   final Widget Function(BuildContext context, Question question,
       void Function(List<String>) update)? builder;
-  const Survey({Key? key, required this.initialData, this.builder})
+  final Widget Function(int questionsAttempted)? onNext;
+  final String? defaultErrorText;
+  const Survey(
+      {Key? key,
+      required this.initialData,
+      this.builder,
+      this.defaultErrorText,
+      this.onNext})
       : super(key: key);
   @override
   State<Survey> createState() => _SurveyState();
@@ -22,6 +29,7 @@ class _SurveyState extends State<Survey> {
     Question question,
     void Function(List<String>) update,
   ) builder;
+  int _counter = 0;
   @override
   void initState() {
     _surveyState = [];
@@ -33,6 +41,8 @@ class _SurveyState extends State<Survey> {
             key: ObjectKey(model),
             question2: model,
             update: update,
+            defaultErrorText: "This field is mandatory*",
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           );
     }
     super.initState();
@@ -68,6 +78,7 @@ class _SurveyState extends State<Survey> {
         questionNodes[i].answers.clear();
         questionNodes[i].answers.addAll(value);
         setState(() {});
+        widget.onNext?.call(++_counter);
       });
       list.add(child);
       if (_isAnswered(questionNodes[i]) &&
