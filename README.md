@@ -1,18 +1,42 @@
-# Flutter Survey - [ALPHA]
-### - Not for production
+<p align="center">
+
+ <img src="https://user-images.githubusercontent.com/40787439/197688650-c68e9deb-f2d3-463c-b712-f8f03088fd78.svg" alt="Flutter Survey Logo" width="200"/>  
+</p>
+<p align="center">
+<a href="https://pub.dev/packages/flutter_survey"><img src="https://img.shields.io/pub/v/flutter_bloc.svg" alt="Pub"></a>
+<a href="https://github.com/flutter/packages/tree/main/packages/flutter_lints"><img src="https://img.shields.io/badge/style-flutter_lints-40c4ff.svg" alt="style: flutter lints"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
+</p>
+
+# <img src="https://user-images.githubusercontent.com/40787439/197688650-c68e9deb-f2d3-463c-b712-f8f03088fd78.svg" alt="Flutter Survey Logo" width="50"/>  Flutter Survey 
+ Inspired by Google Forms
 
 
-A simple yet powerful package that handles the creation of a dynamic questionnaire/research survey with conditional questions.
-Have you ever wanted to implement a form/questionnaire/survey like the ones you see on Google forms?
-Have you ever wanted to implement conditional questions that show or hide the questions that follow, based on the user's input?
+
+A simple yet powerful package that handles the creation of a dynamic questionnaire/research survey with conditional questions.<br>
+Have you ever wanted to implement a form/questionnaire/survey like the ones you see on Google forms?<br>
+Have you ever wanted to implement conditional questions that show or hide the questions that follow, based on the user's input?<br>
 This package helps you build data collection forms hassle-free.
 
 
+<p align="left">
+<img src="https://user-images.githubusercontent.com/40787439/117844127-0f39fc00-b29d-11eb-9bb3-714ba2b58811.gif" alt="Screenrecorder-2021-05-11-20-23-21-153" width="300"/>
+</p>
 
-<img src="https://user-images.githubusercontent.com/40787439/117844127-0f39fc00-b29d-11eb-9bb3-714ba2b58811.gif" alt="Screenrecorder-2021-05-11-20-23-21-153" width="200"/>
+## 📋 Features
+:heavy_check_mark: Eliminates `boilerplate` code for surveys.<br>
+:heavy_check_mark: Implement `Conditional/Single Choice/Multiple` Choice questions.<br>
+:heavy_check_mark: Intuitively construct your own questions with `infinite nesting`.<br> 
+:heavy_check_mark: `Customize` it by creating your own form widgets from scratch using the `builder` method.<br>
+:heavy_check_mark: Add your own `properties` for your `custom` widgets.<br>
+:heavy_check_mark: Supports `Internationalization`.<br>
+:heavy_check_mark: Supports `validation` using the `Form` widget<br>
+:heavy_check_mark: Supports custom `regex` validation<br>
+:heavy_check_mark: Supports various formats of input (`Date Picker`, `File Upload`, `Slider` etc)<br>
+:heavy_check_mark: Implicitly supports `Dark theme`.<br>
 
 
-## Installation
+## ⚙️ Installation
 
 This project requires the latest version of [Dart](https://www.dartlang.org/). You can download the latest and greatest [here](https://www.dartlang.org/tools/sdk#install).
 
@@ -22,7 +46,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-    flutter_survey: '^0.0.1'
+    flutter_survey: '^0.1.0'
 ```
 
 
@@ -45,20 +69,20 @@ Now in your Dart code, you can use:
 import 'package:flutter_survey/survey.dart';
 ```
 
-## Usage
+## 📖 Usage
 
 First, you must initialize the question structure where you specify the type of questions
 and their possible answers, if any. You can also nest questions to form conditional questions.
 You can even mark them as mandatory. This can be either in json format fetched from the server or can be constructed using the
 [Question] model provided as part of this package. The structure is intuitive and determines the flow of the form.
 
-### Types of questions.
+### Types of questions
 The Questions are classified based on the kind of input they take.
 
 ### Text Input Question
 As the name suggests here the answer is not limited to any specific choice.
 The answer to this question can be typed in by the user, single line or multiline.
-Setting the [answerChoice] variable to null or simply leaving it altogether gives you this.    
+Setting the `answerChoice` variable to null or simply leaving it altogether gives you this.    
  ```Dart
  Question(
   question: "What is your name?",
@@ -82,22 +106,22 @@ This is because they don't have an associated list of questions that follow it.
 ### Multiple Choice Question
 Here, Checkboxes are used as input. Just like the Single Choice Questions, You define the possible answer choices as a Map
 with the keys being the answer choices. Note that even here the value of the corresponding keys happen to be null for the same
-reason as Single Choice Questions. The difference here is that you set [isSingleChoice] to false.
+reason as Single Choice Questions. The difference here is that you set `isSingleChoice` to false.
 
  ```Dart
-  Question(
-    isSingleChoice: false,
-    question: 'What are the brands that you've tried?',
-    answerChoices: {
-      "Nestle": null,
-      "Starbucks": null,
-      "Coffee Day": null,
-    },
-  ),
+ Question(
+   isSingleChoice: false,
+   question: 'What are the brands that you have tried?',
+   answerChoices: {
+     "Nestle": null,
+     "Starbucks": null,
+     "Coffee Day": null,
+   },
+ ),
  ```
 ### Conditional/Nested Questions
 This is where you define questions that follow based on the answer of the question prior to it.
-The values of the keys defined in the [answerChoices] field determines the flow. For example here, 
+The values of the keys defined in the `answerChoices` field determines the flow. For example here, 
 if the user were to choose "Yes" to "Do you like drinking coffee", the user would be confronted with 
 another question "What are the brands you've tried?" followed by more nesting.
 
@@ -396,7 +420,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+## 🤝 Contributing
+Help make this package more useful and serve the needs of the community by reporting bugs, 
+submitting feedback and/or opening a PR.
 
-## About me
+## ℹ️ About me
 
 Visit my LinkedIn at https://www.linkedin.com/in/michel98
