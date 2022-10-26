@@ -42,6 +42,7 @@ This package helps you build data collection forms hassle-free.
 :heavy_check_mark: Supports `Internationalization`.<br>
 :heavy_check_mark: Supports custom `regex` validation<br>
 :heavy_check_mark: Supports various formats of input (`Date Picker`, `File Upload`, `Slider` etc)<br>
+:heavy_check_mark: Track progress<br>
 
 ## ⚙️ Installation
 
