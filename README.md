@@ -3,9 +3,11 @@
  <img src="https://user-images.githubusercontent.com/40787439/197688650-c68e9deb-f2d3-463c-b712-f8f03088fd78.svg" alt="Flutter Survey Logo" width="200"/>  
 </p>
 <p align="center">
-<a href="https://pub.dev/packages/flutter_survey"><img src="https://img.shields.io/pub/v/flutter_bloc.svg" alt="Pub"></a>
+<a href="https://pub.dev/packages/flutter_survey"><img src="https://img.shields.io/pub/v/flutter_survey.svg?" alt="Pub"></a>
+<a href="https://codemagic.io/apps/6358c75dd690310147230fea/6358c75dd690310147230fe9/latest_build"><img src="https://api.codemagic.io/apps/6358c75dd690310147230fea/6358c75dd690310147230fe9/status_badge.svg" alt="License: MIT"></a>
 <a href="https://github.com/flutter/packages/tree/main/packages/flutter_lints"><img src="https://img.shields.io/badge/style-flutter_lints-40c4ff.svg" alt="style: flutter lints"></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
+
 </p>
 
 # <img src="https://user-images.githubusercontent.com/40787439/197688650-c68e9deb-f2d3-463c-b712-f8f03088fd78.svg" alt="Flutter Survey Logo" width="50"/>  Flutter Survey 
@@ -20,8 +22,12 @@ This package helps you build data collection forms hassle-free.
 
 
 <p align="left">
-<img src="https://user-images.githubusercontent.com/40787439/117844127-0f39fc00-b29d-11eb-9bb3-714ba2b58811.gif" alt="Screenrecorder-2021-05-11-20-23-21-153" width="300"/>
+<img src="https://user-images.githubusercontent.com/40787439/197952319-310602aa-464c-413b-8cf2-e49b6ddebfbb.gif" alt="Screenrecorder-2021-05-11-20-23-21-153" width="200"/>
 </p>
+
+
+
+
 
 ## 📋 Features
 :heavy_check_mark: Eliminates `boilerplate` code for surveys.<br>
