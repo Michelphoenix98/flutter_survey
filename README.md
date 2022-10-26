@@ -35,12 +35,13 @@ This package helps you build data collection forms hassle-free.
 :heavy_check_mark: Intuitively construct your own questions with `infinite nesting`.<br> 
 :heavy_check_mark: `Customize` it by creating your own form widgets from scratch using the `builder` method.<br>
 :heavy_check_mark: Add your own `properties` for your `custom` widgets.<br>
-:heavy_check_mark: Supports `Internationalization`.<br>
 :heavy_check_mark: Supports `validation` using the `Form` widget<br>
-:heavy_check_mark: Supports custom `regex` validation<br>
-:heavy_check_mark: Supports various formats of input (`Date Picker`, `File Upload`, `Slider` etc)<br>
 :heavy_check_mark: Implicitly supports `Dark theme`.<br>
 
+## 🔮 Next Update
+:heavy_check_mark: Supports `Internationalization`.<br>
+:heavy_check_mark: Supports custom `regex` validation<br>
+:heavy_check_mark: Supports various formats of input (`Date Picker`, `File Upload`, `Slider` etc)<br>
 
 ## ⚙️ Installation
 
@@ -334,6 +335,10 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Form(
         key: _formKey,
         child: Survey(
+          onNext: (questionResults) {
+            print(questionResults);
+            //store the result
+          },
           initialData: [
             Question(
               isMandatory: true,
