@@ -60,22 +60,25 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: widget.question2.answerChoices.keys
-            .map((answer) => Row(
-                  children: [
-                    Radio(
-                        value: answer,
-                        groupValue: _selectedAnswer,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedAnswer = value as String;
-                          });
-                          widget.onChange([_selectedAnswer!]);
-                        }),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Text(answer),
-                    )
-                  ],
+            .map((answer) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Radio(
+                          value: answer,
+                          groupValue: _selectedAnswer,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedAnswer = value as String;
+                            });
+                            widget.onChange([_selectedAnswer!]);
+                          }),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Text(answer),
+                      )
+                    ],
+                  ),
                 ))
             .toList());
   }

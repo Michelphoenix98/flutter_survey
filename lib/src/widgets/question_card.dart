@@ -53,8 +53,8 @@ class QuestionCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 6),
+                      padding: const EdgeInsets.only(
+                          left: 4, right: 20, top: 6, bottom: 6),
                       child: AnswerChoiceWidget(
                           question2: question2,
                           onChange: (value) {
@@ -64,12 +64,16 @@ class QuestionCard extends StatelessWidget {
                           })),
                   if (state.hasError)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       child: Text(
                         state.errorText!,
                         style: const TextStyle(color: Colors.red),
                       ),
-                    )
+                    ),
+                  const SizedBox(
+                    height: 12,
+                  )
                 ],
               ),
             ),
