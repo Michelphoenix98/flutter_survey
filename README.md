@@ -285,7 +285,7 @@ another question "What are the brands you've tried?" followed by more nesting.
 ### Pass the list of questions to the ConditionalQuestions Widget.
 This is the main widget that handles the form.
 The list of questions constructed above are passed to the `initialData` parameter.
-The `onNext` callback function is an optional parameter that is called with the current state of the survey, which is List of
+The `onNext` callback function is an optional parameter that is called with the current state of the survey, which is a List of
 `QuestionResult` objects.
 ```Dart
          Survey(
