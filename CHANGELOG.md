@@ -13,3 +13,7 @@
 ## [0.1.2] - 2022-11-06
 
 * Added Documentation and minor bug fixes.
+
+## [0.1.3] - 2022-11-06
+
+* Updated Readme.
