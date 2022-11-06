@@ -284,154 +284,20 @@ another question "What are the brands you've tried?" followed by more nesting.
 ```
 ### Pass the list of questions to the ConditionalQuestions Widget.
 This is the main widget that handles the form.
+The list of questions constructed above are passed to the `initialData` parameter.
+The `onNext` callback function is an optional parameter that is called with the current state of the survey, which is List of
+`QuestionResult` objects.
 ```Dart
          Survey(
           initialData: _surveyData,
+          onNext:(questionResults){
+              print(questionResults);
+              //store the result
+          },
         )
 ```
 
-## Full code:
-```Dart
-import 'package:flutter/material.dart';
-import 'package:flutter_survey/flutter_survey.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-      ),
-      themeMode: ThemeMode.system,
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final _formKey = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title!),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Survey(
-          onNext: (questionResults) {
-            print(questionResults);
-            //store the result
-          },
-          initialData: [
-            Question(
-              isMandatory: true,
-              question: 'Do you like drinking coffee?',
-              answerChoices: {
-                "Yes": [
-                  Question(
-                      singleChoice: false,
-                      question: "What are the brands that you've tried?",
-                      answerChoices: {
-                        "Nestle": null,
-                        "Starbucks": null,
-                        "Coffee Day": [
-                          Question(
-                            question: "Did you enjoy visiting Coffee Day?",
-                            isMandatory: true,
-                            answerChoices: {
-                              "Yes": [
-                                Question(
-                                  question: "Please tell us why you like it",
-                                )
-                              ],
-                              "No": [
-                                Question(
-                                  question: "Please tell us what went wrong",
-                                )
-                              ],
-                            },
-                          )
-                        ],
-                      })
-                ],
-                "No": [
-                  Question(
-                    question: "Do you like drinking Tea then?",
-                    answerChoices: {
-                      "Yes": [
-                        Question(
-                            question: "What are the brands that you've tried?",
-                            answerChoices: {
-                              "Nestle": null,
-                              "ChaiBucks": null,
-                              "Indian Premium Tea": [
-                                Question(
-                                  question: "Did you enjoy visiting IPT?",
-                                  answerChoices: {
-                                    "Yes": [
-                                      Question(
-                                        question:
-                                        "Please tell us why you like it",
-                                      )
-                                    ],
-                                    "No": [
-                                      Question(
-                                        question:
-                                        "Please tell us what went wrong",
-                                      )
-                                    ],
-                                  },
-                                )
-                              ],
-                            })
-                      ],
-                      "No": null,
-                    },
-                  )
-                ],
-              },
-            ),
-            Question(
-                question: "What age group do you fall in?",
-                isMandatory: true,
-                answerChoices: const {
-                  "18-20": null,
-                  "20-30": null,
-                  "Greater than 30": null,
-                })
-          ],
-        ),
-      ),
-      bottomNavigationBar: TextButton(
-        child: Text("Validate"),
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            //do something
-          }
-        },
-      ),
-    );
-  }
-}
-```
 ## 🤝 Contributing
 Help make this package more useful and serve the needs of the community by reporting bugs, 
 submitting feedback and/or opening a PR.
