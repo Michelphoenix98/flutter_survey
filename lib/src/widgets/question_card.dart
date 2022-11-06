@@ -5,15 +5,26 @@ import 'answer_choice_widget.dart';
 import 'survey_form_field.dart';
 
 class QuestionCard extends StatelessWidget {
-  final Question question2;
+  ///The parameter that contains the data pertaining to a question.
+  final Question question;
+
+  ///A callback function that must be called with answers to rebuild the survey elements.
   final void Function(List<String>) update;
+
+  ///An optional method to call with the final value when the form is saved via FormState.save.
   final FormFieldSetter<List<String>>? onSaved;
+
+  ///An optional method that validates an input. Returns an error string to display if the input is invalid, or null otherwise.
   final FormFieldValidator<List<String>>? validator;
+
+  ///Used to configure the auto validation of FormField and Form widgets.
   final AutovalidateMode? autovalidateMode;
+
+  ///Used to configure the default errorText for the validator.
   final String? defaultErrorText;
   const QuestionCard(
       {Key? key,
-      required this.question2,
+      required this.question,
       required this.update,
       this.onSaved,
       this.validator,
@@ -25,7 +36,7 @@ class QuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SurveyFormField(
         defaultErrorText: defaultErrorText,
-        question: question2,
+        question: question,
         onSaved: onSaved,
         validator: validator,
         autovalidateMode: autovalidateMode,
@@ -41,9 +52,9 @@ class QuestionCard extends StatelessWidget {
                         top: 24, right: 20, left: 20, bottom: 6),
                     child: RichText(
                       text: TextSpan(
-                          text: question2.question,
+                          text: question.question,
                           style: Theme.of(context).textTheme.bodyText1,
-                          children: question2.isMandatory
+                          children: question.isMandatory
                               ? [
                                   const TextSpan(
                                       text: "*",
@@ -56,7 +67,7 @@ class QuestionCard extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 4, right: 20, top: 6, bottom: 6),
                       child: AnswerChoiceWidget(
-                          question2: question2,
+                          question: question,
                           onChange: (value) {
                             state.didChange(value);
 

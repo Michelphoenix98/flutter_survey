@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/question.dart';
 
 class AnswerChoiceWidget extends StatefulWidget {
+  ///A callback function that must be called with the answer.
   final void Function(List<String> answers) onChange;
-  final Question question2;
+
+  ///The parameter that contains the data pertaining to a question.
+  final Question question;
+
   const AnswerChoiceWidget(
-      {Key? key, required this.question2, required this.onChange})
+      {Key? key, required this.question, required this.onChange})
       : super(key: key);
 
   @override
@@ -16,29 +20,32 @@ class AnswerChoiceWidget extends StatefulWidget {
 class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
   @override
   Widget build(BuildContext context) {
-    if (widget.question2.answerChoices.isNotEmpty) {
-      if (widget.question2.singleChoice) {
+    if (widget.question.answerChoices.isNotEmpty) {
+      if (widget.question.singleChoice) {
         return SingleChoiceAnswer(
-            onChange: widget.onChange, question2: widget.question2);
+            onChange: widget.onChange, question: widget.question);
       } else {
         return MultipleChoiceAnswer(
-            onChange: widget.onChange, question2: widget.question2);
+            onChange: widget.onChange, question: widget.question);
       }
     } else {
       return SentenceAnswer(
-        key: ObjectKey(widget.question2),
+        key: ObjectKey(widget.question),
         onChange: widget.onChange,
-        question2: widget.question2,
+        question: widget.question,
       );
     }
   }
 }
 
 class SingleChoiceAnswer extends StatefulWidget {
+  ///A callback function that must be called with the answer.
   final void Function(List<String> answers) onChange;
-  final Question question2;
+
+  ///The parameter that contains the data pertaining to a question.
+  final Question question;
   const SingleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question2})
+      {Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override
@@ -49,8 +56,8 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
   String? _selectedAnswer;
   @override
   void initState() {
-    if (widget.question2.answers.isNotEmpty) {
-      _selectedAnswer = widget.question2.answers.first;
+    if (widget.question.answers.isNotEmpty) {
+      _selectedAnswer = widget.question.answers.first;
     }
     super.initState();
   }
@@ -59,7 +66,7 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
   Widget build(BuildContext context) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: widget.question2.answerChoices.keys
+        children: widget.question.answerChoices.keys
             .map((answer) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
@@ -85,10 +92,13 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
 }
 
 class MultipleChoiceAnswer extends StatefulWidget {
+  ///A callback function that must be called with the answer.
   final void Function(List<String> answers) onChange;
-  final Question question2;
+
+  ///The parameter that contains the data pertaining to a question.
+  final Question question;
   const MultipleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question2})
+      {Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override
@@ -101,14 +111,14 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
   @override
   void initState() {
     _answers = [];
-    _answers.addAll(widget.question2.answers);
+    _answers.addAll(widget.question.answers);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: widget.question2.answerChoices.keys
+        children: widget.question.answerChoices.keys
             .map((answer) => Row(
                   children: [
                     Checkbox(
@@ -130,10 +140,13 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
 }
 
 class SentenceAnswer extends StatefulWidget {
+  ///A callback function that must be called with the answer.
   final void Function(List<String> answers) onChange;
-  final Question question2;
+
+  ///The parameter that contains the data pertaining to a question.
+  final Question question;
   const SentenceAnswer(
-      {Key? key, required this.onChange, required this.question2})
+      {Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override
@@ -144,8 +157,8 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
   final TextEditingController _textEditingController = TextEditingController();
   @override
   void initState() {
-    if (widget.question2.answers.isNotEmpty) {
-      _textEditingController.text = widget.question2.answers.first;
+    if (widget.question.answers.isNotEmpty) {
+      _textEditingController.text = widget.question.answers.first;
     }
     super.initState();
   }
@@ -156,7 +169,7 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
         controller: _textEditingController,
-        onFieldSubmitted: (value) {
+        onChanged: (value) {
           widget.onChange([_textEditingController.text]);
         },
       ),

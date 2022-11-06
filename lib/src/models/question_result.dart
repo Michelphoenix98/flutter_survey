@@ -5,8 +5,13 @@ part 'question_result.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class QuestionResult extends Equatable {
+  ///The parameter that contains the data pertaining to a question.
   final String question;
+
+  ///The list of questions that followed after a particular answer.
   late final List<QuestionResult> children;
+
+  ///The list of answers selected by the user.
   late final List<String> answers;
 
   QuestionResult({required this.question, List<String>? answers})

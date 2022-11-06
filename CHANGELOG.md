@@ -9,3 +9,7 @@
 ## [0.1.1] - 2022-10-26
 
 * Minor changes.
+
+## [0.1.2] - 2022-11-06
+
+* Added Documentation and minor bug fixes.
