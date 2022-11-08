@@ -21,7 +21,7 @@ class QuestionCard extends StatelessWidget {
   final AutovalidateMode? autovalidateMode;
 
   ///Used to configure the default errorText for the validator.
-  final String? defaultErrorText;
+  final String defaultErrorText;
   const QuestionCard(
       {Key? key,
       required this.question,
@@ -29,7 +29,7 @@ class QuestionCard extends StatelessWidget {
       this.onSaved,
       this.validator,
       this.autovalidateMode,
-      this.defaultErrorText})
+      required this.defaultErrorText})
       : super(key: key);
 
   @override

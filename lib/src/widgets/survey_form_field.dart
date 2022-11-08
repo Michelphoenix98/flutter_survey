@@ -18,7 +18,7 @@ class SurveyFormField extends StatelessWidget {
   final AutovalidateMode? autovalidateMode;
 
   ///Used to configure the default errorText for the validator.
-  final String? defaultErrorText;
+  final String defaultErrorText;
 
   ///Function that returns the widget representing this form field. It is passed the form field state as input, containing the current value and validation state of this field.
   final Widget Function(FormFieldState<List<String>> state) builder;
@@ -29,7 +29,7 @@ class SurveyFormField extends StatelessWidget {
     this.validator,
     this.autovalidateMode,
     required this.builder,
-    this.defaultErrorText,
+    required this.defaultErrorText,
   }) : super(key: key);
 
   @override

@@ -52,7 +52,8 @@ class _SurveyState extends State<Survey> {
             key: /* ValueKey(model.hashCode)*/ ObjectKey(model),
             question: model,
             update: update,
-            defaultErrorText: model.errorText,
+            defaultErrorText: model.errorText ??
+                (widget.defaultErrorText ?? "This field is mandatory*"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           );
     }

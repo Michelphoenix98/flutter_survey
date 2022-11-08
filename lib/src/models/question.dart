@@ -18,7 +18,7 @@ class Question extends Equatable {
   final bool isMandatory;
 
   ///The default error text to be shown upon failing validation.
-  final String errorText;
+  final String? errorText;
 
   ///Custom properties for every question/field.
   final Map<String, dynamic>? properties;
@@ -31,11 +31,11 @@ class Question extends Equatable {
       this.singleChoice = true,
       Map<String, List<Question>?>? answerChoices,
       this.isMandatory = false,
+      this.errorText,
       this.properties,
       List<String>? answers})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
-        errorText = "This field is mandatory*",
         assert(
             properties != null && answerChoices!.isEmpty || properties == null);
 
