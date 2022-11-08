@@ -1,6 +1,6 @@
 name: flutter_survey
 description: A package that handles the creation and state of a dynamic questionnaire/data collection survey with conditional questions.
-version: 0.1.3
+version: 0.1.4
 homepage: https://github.com/Michelphoenix98/flutter_survey
 
 environment:
