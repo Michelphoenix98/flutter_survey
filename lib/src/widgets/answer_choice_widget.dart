@@ -132,7 +132,10 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
                           widget.onChange(_answers);
                           setState(() {});
                         }),
-                    Text(answer)
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Text(answer),
+                    )
                   ],
                 ))
             .toList());
