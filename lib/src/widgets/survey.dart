@@ -29,7 +29,7 @@ class Survey extends StatefulWidget {
       this.builder,
       this.defaultErrorText,
       this.onNext,
-      this.scrollToLastQuestion = true //todo defaul false
+      this.scrollToLastQuestion = false,
       })
       : super(key: key);
   @override
@@ -72,11 +72,10 @@ class _SurveyState extends State<Survey> {
       DiffUtilSliverList.fromKeyedWidgetList(
         children: children,
         insertAnimationBuilder: (context, animation, child) {
-          print("rsydortest children lenght: ${children.length}");
           if (widget.scrollToLastQuestion) {
             scrollController.animateTo(
               MediaQuery.of(context).size.height,
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
             );
           }

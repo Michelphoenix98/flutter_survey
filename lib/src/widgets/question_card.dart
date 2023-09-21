@@ -48,12 +48,11 @@ class QuestionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(
-                        top: 24, right: 20, left: 20, bottom: 6),
+                    padding: question.questionPadding,
                     child: RichText(
                       text: TextSpan(
                           text: question.question,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: question.quiestionStyle ?? Theme.of(context).textTheme.bodyText1,
                           children: question.isMandatory
                               ? [
                                   const TextSpan(

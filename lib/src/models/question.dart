@@ -39,11 +39,11 @@ class Question extends Equatable {
       this.isMandatory = false,
       this.errorText,
       this.properties,
-      this.quiestionStyle = const TextStyle(fontSize: 19.0, color: Colors.black, fontFamily: 'sans-serif-condensed'),//tood
-      this.answerStyle = const TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'sans-serif-condensed'),//tood
-      this.maxLines = 5,//todo (domyslnie 1)
+      this.quiestionStyle,
+      this.answerStyle,
+      this.maxLines = 1,
       this.paddingBetweenAnswers = 1.0,
-      this.questionPadding = const EdgeInsets.only(left: 4, right: 20, top: 1, bottom: 1),//todo domyslnie const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6)
+      this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
       List<String>? answers,})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
