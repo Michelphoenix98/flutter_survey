@@ -21,12 +21,16 @@ class Survey extends StatefulWidget {
 
   ///A parameter to configure the default error message to be shown when validation fails.
   final String? defaultErrorText;
+
+  final bool scrollToLastQuestion;
   const Survey(
       {Key? key,
       required this.initialData,
       this.builder,
       this.defaultErrorText,
-      this.onNext})
+      this.onNext,
+      this.scrollToLastQuestion = true //todo defaul false
+      })
       : super(key: key);
   @override
   State<Survey> createState() => _SurveyState();
@@ -63,14 +67,21 @@ class _SurveyState extends State<Survey> {
   @override
   Widget build(BuildContext context) {
     var children = _buildChildren(_surveyState);
-
+    final scrollController = ScrollController();
     return CustomScrollView(slivers: [
       DiffUtilSliverList.fromKeyedWidgetList(
         children: children,
-        insertAnimationBuilder: (context, animation, child) => FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
+        insertAnimationBuilder: (context, animation, child) {
+          print("rsydortest children lenght: ${children.length}");
+          if (widget.scrollToLastQuestion) {
+            scrollController.animateTo(
+              MediaQuery.of(context).size.height,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
+          }
+          return FadeTransition(opacity: animation, child: child,);
+          },
         removeAnimationBuilder: (context, animation, child) => FadeTransition(
           opacity: animation,
           child: SizeTransition(
@@ -80,7 +91,9 @@ class _SurveyState extends State<Survey> {
           ),
         ),
       ),
-    ]);
+    ],
+    controller: scrollController,
+    );
   }
 
   List<QuestionResult> _mapCompletionData(List<Question> questionNodes) {

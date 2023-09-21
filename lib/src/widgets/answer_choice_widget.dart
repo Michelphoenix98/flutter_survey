@@ -68,25 +68,33 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: widget.question.answerChoices.keys
             .map((answer) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: answer,
-                          groupValue: _selectedAnswer,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedAnswer = value as String;
-                            });
-                            widget.onChange([_selectedAnswer!]);
-                          }),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: Text(answer),
-                      )
-                    ],
-                  ),
-                ))
+          padding: EdgeInsets.symmetric(vertical: widget.question.paddingBetweenAnswers),
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedAnswer = answer;
+              });
+              widget.onChange([_selectedAnswer!]);
+            },
+            child: Row(
+              children: [
+                Radio(
+                    value: answer,
+                    groupValue: _selectedAnswer,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedAnswer = value as String;
+                      });
+                      widget.onChange([_selectedAnswer!]);
+                    }),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Text(answer, style: widget.question.answerStyle),
+                )
+              ],
+            ),
+          ),
+        ))
             .toList());
   }
 }
@@ -132,10 +140,7 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
                           widget.onChange(_answers);
                           setState(() {});
                         }),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Text(answer),
-                    )
+                    Text(answer, style: widget.question.answerStyle,)
                   ],
                 ))
             .toList());
@@ -171,6 +176,7 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
+        maxLines: widget.question.maxLines,
         controller: _textEditingController,
         onChanged: (value) {
           widget.onChange([_textEditingController.text]);

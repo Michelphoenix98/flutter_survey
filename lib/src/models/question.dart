@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'question.g.dart';
 
@@ -26,6 +27,11 @@ class Question extends Equatable {
   ///The list of answers selected by the user.
   late final List<String> answers;
 
+  final TextStyle? quiestionStyle;
+  final TextStyle? answerStyle;
+  final int maxLines;
+  final double paddingBetweenAnswers;
+  final EdgeInsets questionPadding;
   Question(
       {required this.question,
       this.singleChoice = true,
@@ -33,7 +39,12 @@ class Question extends Equatable {
       this.isMandatory = false,
       this.errorText,
       this.properties,
-      List<String>? answers})
+      this.quiestionStyle = const TextStyle(fontSize: 19.0, color: Colors.black, fontFamily: 'sans-serif-condensed'),//tood
+      this.answerStyle = const TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'sans-serif-condensed'),//tood
+      this.maxLines = 5,//todo (domyslnie 1)
+      this.paddingBetweenAnswers = 1.0,
+      this.questionPadding = const EdgeInsets.only(left: 4, right: 20, top: 1, bottom: 1),//todo domyslnie const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6)
+      List<String>? answers,})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
         assert(
@@ -46,5 +57,5 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props =>
-      [question, singleChoice, answerChoices, isMandatory];
+      [question, singleChoice, answerChoices, isMandatory, quiestionStyle, answerStyle, maxLines, paddingBetweenAnswers, questionPadding];
 }
