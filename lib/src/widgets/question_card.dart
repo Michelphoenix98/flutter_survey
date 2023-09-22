@@ -22,6 +22,12 @@ class QuestionCard extends StatelessWidget {
 
   ///Used to configure the default errorText for the validator.
   final String defaultErrorText;
+  final TextStyle? quiestionStyle;
+  final TextStyle? answerStyle;
+  final int maxLines;
+  final double paddingBetweenAnswers;
+  final EdgeInsets questionPadding;
+
   const QuestionCard(
       {Key? key,
       required this.question,
@@ -29,7 +35,13 @@ class QuestionCard extends StatelessWidget {
       this.onSaved,
       this.validator,
       this.autovalidateMode,
-      required this.defaultErrorText})
+      required this.defaultErrorText,
+      this.quiestionStyle = null,
+      this.answerStyle = null,
+      this.maxLines = 1,
+      this.paddingBetweenAnswers = 4.0,
+      this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
+      })
       : super(key: key);
 
   @override
@@ -48,11 +60,11 @@ class QuestionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: question.questionPadding,
+                    padding: questionPadding,
                     child: RichText(
                       text: TextSpan(
                           text: question.question,
-                          style: question.quiestionStyle ?? Theme.of(context).textTheme.bodyText1,
+                          style: quiestionStyle ?? Theme.of(context).textTheme.bodyText1,
                           children: question.isMandatory
                               ? [
                                   const TextSpan(
@@ -66,6 +78,9 @@ class QuestionCard extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 4, right: 20, top: 6, bottom: 6),
                       child: AnswerChoiceWidget(
+                          paddingBetweenAnswers: paddingBetweenAnswers,
+                          answerStyle: answerStyle ?? TextStyle(),
+                          maxLines: maxLines,
                           question: question,
                           onChange: (value) {
                             state.didChange(value);

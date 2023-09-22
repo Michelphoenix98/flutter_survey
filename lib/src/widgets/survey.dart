@@ -23,6 +23,12 @@ class Survey extends StatefulWidget {
   final String? defaultErrorText;
 
   final bool scrollToLastQuestion;
+  final TextStyle? quiestionStyle;
+  final TextStyle? answerStyle;
+  final int maxLines;
+  final double paddingBetweenAnswers;
+  final EdgeInsets questionPadding;
+
   const Survey(
       {Key? key,
       required this.initialData,
@@ -30,6 +36,11 @@ class Survey extends StatefulWidget {
       this.defaultErrorText,
       this.onNext,
       this.scrollToLastQuestion = false,
+      this.quiestionStyle = null,
+      this.answerStyle = null ,
+      this.maxLines = 1,
+      this.paddingBetweenAnswers = 4.0,
+      this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
       })
       : super(key: key);
   @override
@@ -59,6 +70,11 @@ class _SurveyState extends State<Survey> {
             defaultErrorText: model.errorText ??
                 (widget.defaultErrorText ?? "This field is mandatory*"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            maxLines: widget.maxLines,
+            answerStyle: widget.answerStyle,
+            paddingBetweenAnswers: widget.paddingBetweenAnswers,
+            questionPadding: widget.questionPadding,
+            quiestionStyle: widget.quiestionStyle,
           );
     }
     super.initState();
@@ -73,7 +89,7 @@ class _SurveyState extends State<Survey> {
         children: children,
         insertAnimationBuilder: (context, animation, child) {
           if (widget.scrollToLastQuestion) {
-            scrollController.animateTo(
+            scrollController?.animateTo(
               MediaQuery.of(context).size.height,
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,

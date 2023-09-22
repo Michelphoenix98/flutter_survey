@@ -26,12 +26,6 @@ class Question extends Equatable {
 
   ///The list of answers selected by the user.
   late final List<String> answers;
-
-  final TextStyle? quiestionStyle;
-  final TextStyle? answerStyle;
-  final int maxLines;
-  final double paddingBetweenAnswers;
-  final EdgeInsets questionPadding;
   Question(
       {required this.question,
       this.singleChoice = true,
@@ -39,11 +33,6 @@ class Question extends Equatable {
       this.isMandatory = false,
       this.errorText,
       this.properties,
-      this.quiestionStyle,
-      this.answerStyle,
-      this.maxLines = 1,
-      this.paddingBetweenAnswers = 1.0,
-      this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
       List<String>? answers,})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
@@ -57,5 +46,5 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props =>
-      [question, singleChoice, answerChoices, isMandatory, quiestionStyle, answerStyle, maxLines, paddingBetweenAnswers, questionPadding];
+      [question, singleChoice, answerChoices, isMandatory];
 }

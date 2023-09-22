@@ -8,9 +8,12 @@ class AnswerChoiceWidget extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final double paddingBetweenAnswers;
+  final TextStyle answerStyle;
+  final maxLines;
 
   const AnswerChoiceWidget(
-      {Key? key, required this.question, required this.onChange})
+      {Key? key, required this.question, required this.onChange, this.paddingBetweenAnswers=4, this.answerStyle=const TextStyle(), this.maxLines=1})
       : super(key: key);
 
   @override
@@ -23,16 +26,17 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
     if (widget.question.answerChoices.isNotEmpty) {
       if (widget.question.singleChoice) {
         return SingleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+            onChange: widget.onChange, question: widget.question, paddingBetweenAnswers: widget.paddingBetweenAnswers, answerStyle: widget.answerStyle);
       } else {
         return MultipleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+            onChange: widget.onChange, question: widget.question, answerStyle: widget.answerStyle,);
       }
     } else {
       return SentenceAnswer(
         key: ObjectKey(widget.question),
         onChange: widget.onChange,
         question: widget.question,
+        maxLines: widget.maxLines,
       );
     }
   }
@@ -44,8 +48,11 @@ class SingleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final double paddingBetweenAnswers;
+  final TextStyle answerStyle;
+
   const SingleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.paddingBetweenAnswers=4.0, this.answerStyle=const TextStyle()})
       : super(key: key);
 
   @override
@@ -68,7 +75,7 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: widget.question.answerChoices.keys
             .map((answer) => Padding(
-          padding: EdgeInsets.symmetric(vertical: widget.question.paddingBetweenAnswers),
+          padding: EdgeInsets.symmetric(vertical: widget.paddingBetweenAnswers),
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -89,7 +96,7 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
                     }),
                 Flexible(
                   fit: FlexFit.loose,
-                  child: Text(answer, style: widget.question.answerStyle),
+                  child: Text(answer, style: widget.answerStyle),
                 )
               ],
             ),
@@ -105,8 +112,9 @@ class MultipleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final TextStyle answerStyle;
   const MultipleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.answerStyle=const TextStyle()})
       : super(key: key);
 
   @override
@@ -140,7 +148,7 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
                           widget.onChange(_answers);
                           setState(() {});
                         }),
-                    Text(answer, style: widget.question.answerStyle,)
+                    Text(answer, style: widget.answerStyle)
                   ],
                 ))
             .toList());
@@ -153,8 +161,9 @@ class SentenceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final int maxLines;
   const SentenceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.maxLines=1})
       : super(key: key);
 
   @override
@@ -176,7 +185,7 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
-        maxLines: widget.question.maxLines,
+        maxLines: widget.maxLines,
         controller: _textEditingController,
         onChanged: (value) {
           widget.onChange([_textEditingController.text]);
