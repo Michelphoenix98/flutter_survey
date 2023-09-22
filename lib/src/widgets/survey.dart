@@ -28,6 +28,8 @@ class Survey extends StatefulWidget {
   final int maxLines;
   final double paddingBetweenAnswers;
   final EdgeInsets questionPadding;
+  final Widget? bottomWidget;
+  final void Function(int answersCount)? onInit;
 
   const Survey(
       {Key? key,
@@ -41,6 +43,8 @@ class Survey extends StatefulWidget {
       this.maxLines = 1,
       this.paddingBetweenAnswers = 4.0,
       this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
+      this.bottomWidget,
+      this.onInit
       })
       : super(key: key);
   @override
@@ -49,6 +53,7 @@ class Survey extends StatefulWidget {
 
 class _SurveyState extends State<Survey> {
   late List<Question> _surveyState;
+  int _lastItemsCount = 0;
   late Widget Function(
     BuildContext context,
     Question question,
@@ -77,23 +82,31 @@ class _SurveyState extends State<Survey> {
             quiestionStyle: widget.quiestionStyle,
           );
     }
+    _lastItemsCount = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var children = _buildChildren(_surveyState);
+    widget.onInit?.call(_surveyState.first.answers.length);
+    if (widget.bottomWidget!=null) {
+      children.add(widget.bottomWidget!);
+    }
     final scrollController = ScrollController();
     return CustomScrollView(slivers: [
       DiffUtilSliverList.fromKeyedWidgetList(
         children: children,
         insertAnimationBuilder: (context, animation, child) {
           if (widget.scrollToLastQuestion) {
-            scrollController?.animateTo(
-              MediaQuery.of(context).size.height,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
+            final animationAllow = _lastItemsCount != children.length;
+            if (animationAllow) {
+              scrollController?.animateTo(MediaQuery.of(context).size.height,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            }
+            _lastItemsCount = children.length;
           }
           return FadeTransition(opacity: animation, child: child,);
           },
