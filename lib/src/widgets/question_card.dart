@@ -22,7 +22,7 @@ class QuestionCard extends StatelessWidget {
 
   ///Used to configure the default errorText for the validator.
   final String defaultErrorText;
-  final TextStyle? quiestionStyle;
+  final TextStyle? questionStyle;
   final TextStyle? answerStyle;
   final int maxLines;
   final double paddingBetweenAnswers;
@@ -36,7 +36,7 @@ class QuestionCard extends StatelessWidget {
       this.validator,
       this.autovalidateMode,
       required this.defaultErrorText,
-      this.quiestionStyle = null,
+      this.questionStyle = null,
       this.answerStyle = null,
       this.maxLines = 1,
       this.paddingBetweenAnswers = 4.0,
@@ -64,7 +64,7 @@ class QuestionCard extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                           text: question.question,
-                          style: quiestionStyle ?? Theme.of(context).textTheme.bodyText1,
+                          style: questionStyle ?? Theme.of(context).textTheme.bodyText1,
                           children: question.isMandatory
                               ? [
                                   const TextSpan(

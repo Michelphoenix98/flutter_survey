@@ -23,7 +23,7 @@ class Survey extends StatefulWidget {
   final String? defaultErrorText;
 
   final bool scrollToLastQuestion;
-  final TextStyle? quiestionStyle;
+  final TextStyle? questionStyle;
   final TextStyle? answerStyle;
   final int maxLines;
   final double paddingBetweenAnswers;
@@ -38,7 +38,7 @@ class Survey extends StatefulWidget {
       this.defaultErrorText,
       this.onNext,
       this.scrollToLastQuestion = false,
-      this.quiestionStyle = null,
+      this.questionStyle = null,
       this.answerStyle = null ,
       this.maxLines = 1,
       this.paddingBetweenAnswers = 4.0,
@@ -79,7 +79,7 @@ class _SurveyState extends State<Survey> {
             answerStyle: widget.answerStyle,
             paddingBetweenAnswers: widget.paddingBetweenAnswers,
             questionPadding: widget.questionPadding,
-            quiestionStyle: widget.quiestionStyle,
+            questionStyle: widget.questionStyle,
           );
     }
     _lastItemsCount = 0;
@@ -101,10 +101,19 @@ class _SurveyState extends State<Survey> {
           if (widget.scrollToLastQuestion) {
             final animationAllow = _lastItemsCount != children.length;
             if (animationAllow) {
-              scrollController?.animateTo(MediaQuery.of(context).size.height,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
+              var animationToPosition = 0.0;
+              children.forEach((element) {
+                if (element is QuestionCard) {
+                  animationToPosition += 70.0 * element.question.answerChoices.length;
+                  if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
+                }
+              });
+              if (animationToPosition > 0) {
+                scrollController?.animateTo(animationToPosition,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              }
             }
             _lastItemsCount = children.length;
           }
