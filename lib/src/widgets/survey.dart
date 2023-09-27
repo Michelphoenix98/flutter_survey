@@ -53,7 +53,6 @@ class Survey extends StatefulWidget {
 
 class _SurveyState extends State<Survey> {
   late List<Question> _surveyState;
-  int _lastItemsCount = 0;
   late Widget Function(
     BuildContext context,
     Question question,
@@ -82,7 +81,6 @@ class _SurveyState extends State<Survey> {
             questionStyle: widget.questionStyle,
           );
     }
-    _lastItemsCount = 0;
     super.initState();
   }
 
@@ -99,28 +97,25 @@ class _SurveyState extends State<Survey> {
         children: children,
         insertAnimationBuilder: (context, animation, child) {
           if (widget.scrollToLastQuestion) {
-            final animationAllow = _lastItemsCount != children.length;
-            if (animationAllow) {
-              var animationToPosition = 0.0;
-              bool skipFirst = true;
-              children.forEach((element) {
-                if (!skipFirst) {
-                  if (element is QuestionCard) {
-                    animationToPosition += 70.0 * element.question.answerChoices.length;
-                    if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
-                  }
+            var animationToPosition = 0.0;
+            bool skipFirst = true;
+            children.forEach((element) {
+              if (!skipFirst) {
+                if (element is QuestionCard) {
+                  animationToPosition += 70.0 * element.question.answerChoices.length;
+                  if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
                 }
-                first = false;
-              });
-              if (animationToPosition > 0) {
-                scrollController?.animateTo(animationToPosition,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
               }
+              skipFirst = false;
+            });
+            if (animationToPosition > 0) {
+              scrollController?.animateTo(animationToPosition,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.easeInOut,
+              );
             }
-            _lastItemsCount = children.length;
           }
+
           return FadeTransition(opacity: animation, child: child,);
           },
         removeAnimationBuilder: (context, animation, child) => FadeTransition(
