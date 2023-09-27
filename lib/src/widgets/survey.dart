@@ -102,11 +102,15 @@ class _SurveyState extends State<Survey> {
             final animationAllow = _lastItemsCount != children.length;
             if (animationAllow) {
               var animationToPosition = 0.0;
+              bool skipFirst = true;
               children.forEach((element) {
-                if (element is QuestionCard) {
-                  animationToPosition += 70.0 * element.question.answerChoices.length;
-                  if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
+                if (!skipFirst) {
+                  if (element is QuestionCard) {
+                    animationToPosition += 70.0 * element.question.answerChoices.length;
+                    if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
+                  }
                 }
+                first = false;
               });
               if (animationToPosition > 0) {
                 scrollController?.animateTo(animationToPosition,
