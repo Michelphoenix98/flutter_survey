@@ -86,38 +86,26 @@ class _SurveyState extends State<Survey> {
 
   @override
   Widget build(BuildContext context) {
-    var children = _buildChildren(_surveyState);
     widget.onInit?.call(_surveyState.first.answers.length);
-    if (widget.bottomWidget!=null) {
+    var children = _buildChildren(_surveyState);
+    _setupScrollLastQuestion(children);
+    if (widget.bottomWidget != null) {
       children.add(widget.bottomWidget!);
     }
-    final scrollController = ScrollController();
+    return SingleChildScrollView(
+      child: Column(
+        children: children
+      ),
+    );
+
+
     return CustomScrollView(slivers: [
       DiffUtilSliverList.fromKeyedWidgetList(
         children: children,
-        insertAnimationBuilder: (context, animation, child) {
-          if (widget.scrollToLastQuestion) {
-            var animationToPosition = 0.0;
-            bool skipFirst = true;
-            children.forEach((element) {
-              if (!skipFirst) {
-                if (element is QuestionCard) {
-                  animationToPosition += 70.0 * element.question.answerChoices.length;
-                  if (element.question.answerChoices.length == 0) animationToPosition += 20.0;
-                }
-              }
-              skipFirst = false;
-            });
-            if (animationToPosition > 0) {
-              scrollController?.animateTo(animationToPosition,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeInOut,
-              );
-            }
-          }
-
-          return FadeTransition(opacity: animation, child: child,);
-          },
+        insertAnimationBuilder: (context, animation, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
         removeAnimationBuilder: (context, animation, child) => FadeTransition(
           opacity: animation,
           child: SizeTransition(
@@ -128,8 +116,28 @@ class _SurveyState extends State<Survey> {
         ),
       ),
     ],
-    controller: scrollController,
     );
+  }
+
+  _setupScrollLastQuestion(List<Widget> children) {
+    if (widget.scrollToLastQuestion) {
+      final keyToScroll = GlobalKey();
+      final needToScroll = children.length > 1;
+      if (needToScroll) {
+        children.insert(children.length - 1, Container(key: keyToScroll));
+      }
+      if (needToScroll) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (keyToScroll.currentContext != null) {
+            Scrollable.ensureVisible(
+              keyToScroll.currentContext!,
+              duration: Duration(milliseconds: 200),
+              curve: Curves.ease,
+            );
+          }
+        },);
+      }
+    }
   }
 
   List<QuestionResult> _mapCompletionData(List<Question> questionNodes) {
