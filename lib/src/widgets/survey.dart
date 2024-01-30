@@ -88,7 +88,6 @@ class _SurveyState extends State<Survey> {
   Widget build(BuildContext context) {
     widget.onInit?.call(_surveyState.first.answers.length);
     var children = _buildChildren(_surveyState);
-    _setupScrollLastQuestion(children);
     if (widget.bottomWidget != null) {
       children.add(widget.bottomWidget!);
     }
@@ -165,11 +164,11 @@ class _SurveyState extends State<Survey> {
   List<Widget> _buildChildren(List<Question> questionNodes) {
     List<Widget> list = [];
     for (int i = 0; i < questionNodes.length; i++) {
-      var child = builder(context, questionNodes[i], (List<String> value) {
+      var child = builder(context, questionNodes[i], (List<String> value) async {
         questionNodes[i].answers.clear();
         questionNodes[i].answers.addAll(value);
-        setState(() {});
         widget.onNext?.call(_mapCompletionData(_surveyState));
+        setState(() {});
       });
       list.add(child);
       if (_isAnswered(questionNodes[i]) &&
@@ -181,6 +180,10 @@ class _SurveyState extends State<Survey> {
           }
         }
       }
+    }
+    if (list.isNotEmpty && list.first is QuestionCard && (list.first as QuestionCard).question.answers.isNotEmpty) {
+      _setupScrollLastQuestion(list);
+      setState(() {});
     }
     return list;
   }

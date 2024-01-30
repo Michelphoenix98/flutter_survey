@@ -64,7 +64,6 @@ class QuestionCard extends StatelessWidget {
               bracketText = match.group(0) ?? "";
               questionText = "$questionText ";
             }
-            print("rsydortest questionText: $questionText, bracket: $bracketText");
           }
           return Card(
             elevation: 0,
