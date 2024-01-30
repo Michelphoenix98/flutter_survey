@@ -29,7 +29,7 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
             onChange: widget.onChange, question: widget.question, paddingBetweenAnswers: widget.paddingBetweenAnswers, answerStyle: widget.answerStyle);
       } else {
         return MultipleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question, answerStyle: widget.answerStyle,);
+          onChange: widget.onChange, question: widget.question, answerStyle: widget.answerStyle,);
       }
     } else {
       return SentenceAnswer(
@@ -75,7 +75,7 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: widget.question.answerChoices.keys
             .map((answer) => Padding(
-          padding: EdgeInsets.symmetric(vertical: widget.paddingBetweenAnswers),
+          padding: EdgeInsets.only(bottom: widget.paddingBetweenAnswers),
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -86,6 +86,7 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
             child: Row(
               children: [
                 Radio(
+                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                     value: answer,
                     groupValue: _selectedAnswer,
                     onChanged: (value) {
@@ -136,21 +137,21 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
     return Column(
         children: widget.question.answerChoices.keys
             .map((answer) => Row(
-                  children: [
-                    Checkbox(
-                        value: _answers.contains(answer),
-                        onChanged: (value) {
-                          if (value == true) {
-                            _answers.add(answer);
-                          } else {
-                            _answers.remove(answer);
-                          }
-                          widget.onChange(_answers);
-                          setState(() {});
-                        }),
-                    Text(answer, style: widget.answerStyle)
-                  ],
-                ))
+          children: [
+            Checkbox(
+                value: _answers.contains(answer),
+                onChanged: (value) {
+                  if (value == true) {
+                    _answers.add(answer);
+                  } else {
+                    _answers.remove(answer);
+                  }
+                  widget.onChange(_answers);
+                  setState(() {});
+                }),
+            Text(answer, style: widget.answerStyle)
+          ],
+        ))
             .toList());
   }
 }
@@ -182,15 +183,27 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: TextFormField(
-        maxLines: widget.maxLines,
-        controller: _textEditingController,
-        onChanged: (value) {
-          widget.onChange([_textEditingController.text]);
-        },
+    final borderColor = Color(0xFFD3D3D3);
+    return TextFormField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Color(0xFFFFFFFF),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: borderColor)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor),
+        ),
+
       ),
+      maxLines: widget.maxLines,
+      controller: _textEditingController,
+      onChanged: (value) {
+        widget.onChange([_textEditingController.text]);
+      },
     );
   }
 }

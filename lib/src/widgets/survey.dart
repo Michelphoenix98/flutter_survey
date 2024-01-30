@@ -42,7 +42,7 @@ class Survey extends StatefulWidget {
       this.answerStyle = null ,
       this.maxLines = 1,
       this.paddingBetweenAnswers = 4.0,
-      this.questionPadding = const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
+      this.questionPadding = const EdgeInsets.all(0.0),
       this.bottomWidget,
       this.onInit
       })
@@ -93,9 +93,11 @@ class _SurveyState extends State<Survey> {
       children.add(widget.bottomWidget!);
     }
     return SingleChildScrollView(
-      child: Column(
+      child: Container(
+          color: Color(0xFFFFFFFF),
+          child: Column(
         children: children
-      ),
+      )),
     );
 
 
