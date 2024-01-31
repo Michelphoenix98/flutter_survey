@@ -11,9 +11,10 @@ class AnswerChoiceWidget extends StatefulWidget {
   final double paddingBetweenAnswers;
   final TextStyle answerStyle;
   final maxLines;
+  final Function onTextChange;
 
   const AnswerChoiceWidget(
-      {Key? key, required this.question, required this.onChange, this.paddingBetweenAnswers=4, this.answerStyle=const TextStyle(), this.maxLines=1})
+      {Key? key, required this.question, required this.onChange, this.paddingBetweenAnswers=4, this.answerStyle=const TextStyle(), this.maxLines=1, required this.onTextChange})
       : super(key: key);
 
   @override
@@ -37,6 +38,8 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
         onChange: widget.onChange,
         question: widget.question,
         maxLines: widget.maxLines,
+        answerStyle: widget.answerStyle,
+        onTextChange: widget.onTextChange
       );
     }
   }
@@ -86,6 +89,15 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
             child: Row(
               children: [
                 Radio(
+                    fillColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color(0xFF74AD00);
+                        } else {
+                          return widget.answerStyle.color;
+                        }
+                      },
+                    ),
                     visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                     value: answer,
                     groupValue: _selectedAnswer,
@@ -163,8 +175,10 @@ class SentenceAnswer extends StatefulWidget {
   ///The parameter that contains the data pertaining to a question.
   final Question question;
   final int maxLines;
+  final TextStyle answerStyle;
+  final Function onTextChange;
   const SentenceAnswer(
-      {Key? key, required this.onChange, required this.question, this.maxLines=1})
+      {Key? key, required this.onChange, required this.question, this.maxLines=1, required this.answerStyle, required this.onTextChange})
       : super(key: key);
 
   @override
@@ -185,7 +199,9 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
   Widget build(BuildContext context) {
     final borderColor = Color(0xFFD3D3D3);
     return TextFormField(
+      style: widget.answerStyle,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(8.0),
         filled: true,
         fillColor: Color(0xFFFFFFFF),
         border: OutlineInputBorder(
@@ -203,6 +219,7 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
       controller: _textEditingController,
       onChanged: (value) {
         widget.onChange([_textEditingController.text]);
+        widget.onTextChange.call();
       },
     );
   }

@@ -27,6 +27,7 @@ class QuestionCard extends StatelessWidget {
   final int maxLines;
   final double paddingBetweenAnswers;
   final EdgeInsets questionPadding;
+  final Function onTextChange;
 
   const QuestionCard(
       {Key? key,
@@ -41,6 +42,7 @@ class QuestionCard extends StatelessWidget {
         this.maxLines = 1,
         this.paddingBetweenAnswers = 4.0,
         this.questionPadding = const EdgeInsets.only(top: 12, right: 0, left: 0, bottom: 6),
+        required this.onTextChange
       })
       : super(key: key);
 
@@ -99,9 +101,9 @@ class QuestionCard extends StatelessWidget {
                     answerStyle: answerStyle ?? TextStyle(),
                     maxLines: maxLines,
                     question: question,
+                    onTextChange: onTextChange ,
                     onChange: (value) {
                       state.didChange(value);
-
                       update(value);
                     })),
                 if (state.hasError)

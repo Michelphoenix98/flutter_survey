@@ -53,6 +53,7 @@ class Survey extends StatefulWidget {
 
 class _SurveyState extends State<Survey> {
   late List<Question> _surveyState;
+  final keyToScroll = GlobalKey();
   late Widget Function(
     BuildContext context,
     Question question,
@@ -79,6 +80,7 @@ class _SurveyState extends State<Survey> {
             paddingBetweenAnswers: widget.paddingBetweenAnswers,
             questionPadding: widget.questionPadding,
             questionStyle: widget.questionStyle,
+            onTextChange: () => _scrollToBottom(),
           );
     }
     super.initState();
@@ -122,23 +124,24 @@ class _SurveyState extends State<Survey> {
 
   _setupScrollLastQuestion(List<Widget> children) {
     if (widget.scrollToLastQuestion) {
-      final keyToScroll = GlobalKey();
       final needToScroll = children.length > 1;
       if (needToScroll) {
         children.insert(children.length - 1, Container(key: keyToScroll));
       }
-      if (needToScroll) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          if (keyToScroll.currentContext != null) {
-            Scrollable.ensureVisible(
-              keyToScroll.currentContext!,
-              duration: Duration(milliseconds: 200),
-              curve: Curves.ease,
-            );
-          }
-        },);
-      }
     }
+  }
+
+  _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (keyToScroll.currentContext != null) {
+        Scrollable.ensureVisible(
+          keyToScroll.currentContext!,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
+        );
+      }
+    },);
+    setState(() {});
   }
 
   List<QuestionResult> _mapCompletionData(List<Question> questionNodes) {
@@ -182,9 +185,9 @@ class _SurveyState extends State<Survey> {
       }
     }
     if (list.isNotEmpty && list.first is QuestionCard && (list.first as QuestionCard).question.answers.isNotEmpty) {
-      _setupScrollLastQuestion(list);
-      setState(() {});
+      _scrollToBottom();
     }
+    _setupScrollLastQuestion(list);
     return list;
   }
 
