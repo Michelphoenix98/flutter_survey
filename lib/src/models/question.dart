@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'question.g.dart';
 
@@ -25,7 +26,6 @@ class Question extends Equatable {
 
   ///The list of answers selected by the user.
   late final List<String> answers;
-
   Question(
       {required this.question,
       this.singleChoice = true,
@@ -33,7 +33,7 @@ class Question extends Equatable {
       this.isMandatory = false,
       this.errorText,
       this.properties,
-      List<String>? answers})
+      List<String>? answers,})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
         assert(

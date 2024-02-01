@@ -8,9 +8,13 @@ class AnswerChoiceWidget extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final double paddingBetweenAnswers;
+  final TextStyle answerStyle;
+  final maxLines;
+  final Function onTextChange;
 
   const AnswerChoiceWidget(
-      {Key? key, required this.question, required this.onChange})
+      {Key? key, required this.question, required this.onChange, this.paddingBetweenAnswers=4, this.answerStyle=const TextStyle(), this.maxLines=1, required this.onTextChange})
       : super(key: key);
 
   @override
@@ -23,16 +27,19 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
     if (widget.question.answerChoices.isNotEmpty) {
       if (widget.question.singleChoice) {
         return SingleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+            onChange: widget.onChange, question: widget.question, paddingBetweenAnswers: widget.paddingBetweenAnswers, answerStyle: widget.answerStyle);
       } else {
         return MultipleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+          onChange: widget.onChange, question: widget.question, answerStyle: widget.answerStyle,);
       }
     } else {
       return SentenceAnswer(
         key: ObjectKey(widget.question),
         onChange: widget.onChange,
         question: widget.question,
+        maxLines: widget.maxLines,
+        answerStyle: widget.answerStyle,
+        onTextChange: widget.onTextChange
       );
     }
   }
@@ -44,8 +51,11 @@ class SingleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final double paddingBetweenAnswers;
+  final TextStyle answerStyle;
+
   const SingleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.paddingBetweenAnswers=4.0, this.answerStyle=const TextStyle()})
       : super(key: key);
 
   @override
@@ -68,25 +78,43 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: widget.question.answerChoices.keys
             .map((answer) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: answer,
-                          groupValue: _selectedAnswer,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedAnswer = value as String;
-                            });
-                            widget.onChange([_selectedAnswer!]);
-                          }),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: Text(answer),
-                      )
-                    ],
-                  ),
-                ))
+          padding: EdgeInsets.only(bottom: widget.paddingBetweenAnswers),
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedAnswer = answer;
+              });
+              widget.onChange([_selectedAnswer!]);
+            },
+            child: Row(
+              children: [
+                Radio(
+                    fillColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color(0xFF74AD00);
+                        } else {
+                          return widget.answerStyle.color;
+                        }
+                      },
+                    ),
+                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                    value: answer,
+                    groupValue: _selectedAnswer,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedAnswer = value as String;
+                      });
+                      widget.onChange([_selectedAnswer!]);
+                    }),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Text(answer, style: widget.answerStyle),
+                )
+              ],
+            ),
+          ),
+        ))
             .toList());
   }
 }
@@ -97,8 +125,9 @@ class MultipleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final TextStyle answerStyle;
   const MultipleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.answerStyle=const TextStyle()})
       : super(key: key);
 
   @override
@@ -120,24 +149,21 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
     return Column(
         children: widget.question.answerChoices.keys
             .map((answer) => Row(
-                  children: [
-                    Checkbox(
-                        value: _answers.contains(answer),
-                        onChanged: (value) {
-                          if (value == true) {
-                            _answers.add(answer);
-                          } else {
-                            _answers.remove(answer);
-                          }
-                          widget.onChange(_answers);
-                          setState(() {});
-                        }),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Text(answer),
-                    )
-                  ],
-                ))
+          children: [
+            Checkbox(
+                value: _answers.contains(answer),
+                onChanged: (value) {
+                  if (value == true) {
+                    _answers.add(answer);
+                  } else {
+                    _answers.remove(answer);
+                  }
+                  widget.onChange(_answers);
+                  setState(() {});
+                }),
+            Text(answer, style: widget.answerStyle)
+          ],
+        ))
             .toList());
   }
 }
@@ -148,8 +174,11 @@ class SentenceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
+  final int maxLines;
+  final TextStyle answerStyle;
+  final Function onTextChange;
   const SentenceAnswer(
-      {Key? key, required this.onChange, required this.question})
+      {Key? key, required this.onChange, required this.question, this.maxLines=1, required this.answerStyle, required this.onTextChange})
       : super(key: key);
 
   @override
@@ -168,14 +197,30 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: TextFormField(
-        controller: _textEditingController,
-        onChanged: (value) {
-          widget.onChange([_textEditingController.text]);
-        },
+    final borderColor = Color(0xFFD3D3D3);
+    return TextFormField(
+      style: widget.answerStyle,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(8.0),
+        filled: true,
+        fillColor: Color(0xFFFFFFFF),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: borderColor)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor),
+        ),
+
       ),
+      maxLines: widget.maxLines,
+      controller: _textEditingController,
+      onChanged: (value) {
+        widget.onChange([_textEditingController.text]);
+        widget.onTextChange.call();
+      },
     );
   }
 }

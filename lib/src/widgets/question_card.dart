@@ -22,14 +22,28 @@ class QuestionCard extends StatelessWidget {
 
   ///Used to configure the default errorText for the validator.
   final String defaultErrorText;
+  final TextStyle? questionStyle;
+  final TextStyle? answerStyle;
+  final int maxLines;
+  final double paddingBetweenAnswers;
+  final EdgeInsets questionPadding;
+  final Function onTextChange;
+
   const QuestionCard(
       {Key? key,
-      required this.question,
-      required this.update,
-      this.onSaved,
-      this.validator,
-      this.autovalidateMode,
-      required this.defaultErrorText})
+        required this.question,
+        required this.update,
+        this.onSaved,
+        this.validator,
+        this.autovalidateMode,
+        required this.defaultErrorText,
+        this.questionStyle = null,
+        this.answerStyle = null,
+        this.maxLines = 1,
+        this.paddingBetweenAnswers = 4.0,
+        this.questionPadding = const EdgeInsets.only(top: 12, right: 0, left: 0, bottom: 6),
+        required this.onTextChange
+      })
       : super(key: key);
 
   @override
@@ -41,52 +55,63 @@ class QuestionCard extends StatelessWidget {
         validator: validator,
         autovalidateMode: autovalidateMode,
         builder: (FormFieldState<List<String>> state) {
-          return Container(
-            margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-            child: Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                        top: 24, right: 20, left: 20, bottom: 6),
-                    child: RichText(
-                      text: TextSpan(
-                          text: question.question,
-                          style: Theme.of(context).textTheme.bodyText1,
-                          children: question.isMandatory
-                              ? [
-                                  const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(color: Colors.red))
-                                ]
-                              : null),
+          String questionText = question.question;
+          String bracketText = "";
+          final style = questionStyle ?? Theme.of(context).textTheme.bodyText1;
+          final isBracket = RegExp(r'\([^)]*\)').hasMatch(question.question);
+          if (isBracket) {
+            questionText = RegExp(r'(.+?)\s*\(').firstMatch(question.question)?.group(1) ?? "";
+            final match = RegExp(r'\((.*?)\)').firstMatch(question.question);
+            if (null != match) {
+              bracketText = match.group(0) ?? "";
+              questionText = "$questionText ";
+            }
+          }
+          return Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: questionPadding,
+                  child: RichText(
+                    text: TextSpan(
+                      text: questionText ?? '',
+                      style: style,
+                      children: [
+                        if (isBracket)
+                          TextSpan(
+                            text: bracketText ?? '',
+                            style: style?.copyWith(fontSize: (style?.fontSize ?? 12.0) - 2.0),
+                          ),
+                        if (question.isMandatory)
+                          TextSpan(
+                            text: "*",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                      ],
                     ),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 20, top: 6, bottom: 6),
-                      child: AnswerChoiceWidget(
-                          question: question,
-                          onChange: (value) {
-                            state.didChange(value);
-
-                            update(value);
-                          })),
-                  if (state.hasError)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: Text(
-                        state.errorText!,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  const SizedBox(
-                    height: 12,
-                  )
-                ],
-              ),
+                ),
+                Padding(
+                    padding: EdgeInsets.only(top: 12),
+                    child: AnswerChoiceWidget(
+                    paddingBetweenAnswers: paddingBetweenAnswers,
+                    answerStyle: answerStyle ?? TextStyle(),
+                    maxLines: maxLines,
+                    question: question,
+                    onTextChange: onTextChange ,
+                    onChange: (value) {
+                      state.didChange(value);
+                      update(value);
+                    })),
+                if (state.hasError)
+                  Text(
+                    state.errorText!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+              ],
             ),
           );
         });

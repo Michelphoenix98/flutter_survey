@@ -21,12 +21,31 @@ class Survey extends StatefulWidget {
 
   ///A parameter to configure the default error message to be shown when validation fails.
   final String? defaultErrorText;
+
+  final bool scrollToLastQuestion;
+  final TextStyle? questionStyle;
+  final TextStyle? answerStyle;
+  final int maxLines;
+  final double paddingBetweenAnswers;
+  final EdgeInsets questionPadding;
+  final Widget? bottomWidget;
+  final void Function(int answersCount)? onInit;
+
   const Survey(
       {Key? key,
       required this.initialData,
       this.builder,
       this.defaultErrorText,
-      this.onNext})
+      this.onNext,
+      this.scrollToLastQuestion = false,
+      this.questionStyle = null,
+      this.answerStyle = null ,
+      this.maxLines = 1,
+      this.paddingBetweenAnswers = 4.0,
+      this.questionPadding = const EdgeInsets.all(0.0),
+      this.bottomWidget,
+      this.onInit
+      })
       : super(key: key);
   @override
   State<Survey> createState() => _SurveyState();
@@ -34,6 +53,7 @@ class Survey extends StatefulWidget {
 
 class _SurveyState extends State<Survey> {
   late List<Question> _surveyState;
+  final keyToScroll = GlobalKey();
   late Widget Function(
     BuildContext context,
     Question question,
@@ -55,6 +75,12 @@ class _SurveyState extends State<Survey> {
             defaultErrorText: model.errorText ??
                 (widget.defaultErrorText ?? "This field is mandatory*"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            maxLines: widget.maxLines,
+            answerStyle: widget.answerStyle,
+            paddingBetweenAnswers: widget.paddingBetweenAnswers,
+            questionPadding: widget.questionPadding,
+            questionStyle: widget.questionStyle,
+            onTextChange: () => _scrollToBottom(),
           );
     }
     super.initState();
@@ -62,7 +88,19 @@ class _SurveyState extends State<Survey> {
 
   @override
   Widget build(BuildContext context) {
+    widget.onInit?.call(_surveyState.first.answers.length);
     var children = _buildChildren(_surveyState);
+    if (widget.bottomWidget != null) {
+      children.add(widget.bottomWidget!);
+    }
+    return SingleChildScrollView(
+      child: Container(
+          color: Color(0xFFFFFFFF),
+          child: Column(
+        children: children
+      )),
+    );
+
 
     return CustomScrollView(slivers: [
       DiffUtilSliverList.fromKeyedWidgetList(
@@ -80,7 +118,30 @@ class _SurveyState extends State<Survey> {
           ),
         ),
       ),
-    ]);
+    ],
+    );
+  }
+
+  _setupScrollLastQuestion(List<Widget> children) {
+    if (widget.scrollToLastQuestion) {
+      final needToScroll = children.length > 1;
+      if (needToScroll) {
+        children.insert(children.length - 1, Container(key: keyToScroll));
+      }
+    }
+  }
+
+  _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (keyToScroll.currentContext != null) {
+        Scrollable.ensureVisible(
+          keyToScroll.currentContext!,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
+        );
+      }
+    },);
+    setState(() {});
   }
 
   List<QuestionResult> _mapCompletionData(List<Question> questionNodes) {
@@ -106,11 +167,11 @@ class _SurveyState extends State<Survey> {
   List<Widget> _buildChildren(List<Question> questionNodes) {
     List<Widget> list = [];
     for (int i = 0; i < questionNodes.length; i++) {
-      var child = builder(context, questionNodes[i], (List<String> value) {
+      var child = builder(context, questionNodes[i], (List<String> value) async {
         questionNodes[i].answers.clear();
         questionNodes[i].answers.addAll(value);
-        setState(() {});
         widget.onNext?.call(_mapCompletionData(_surveyState));
+        setState(() {});
       });
       list.add(child);
       if (_isAnswered(questionNodes[i]) &&
@@ -123,6 +184,10 @@ class _SurveyState extends State<Survey> {
         }
       }
     }
+    if (list.isNotEmpty && list.first is QuestionCard && (list.first as QuestionCard).question.answers.isNotEmpty) {
+      _scrollToBottom();
+    }
+    _setupScrollLastQuestion(list);
     return list;
   }
 
