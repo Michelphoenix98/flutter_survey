@@ -53,7 +53,7 @@ class QuestionCard extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                           text: question.question,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           children: question.isMandatory
                               ? [
                                   const TextSpan(
