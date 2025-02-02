@@ -14,11 +14,6 @@
 *.ipr
 *.iws
 .idea/
-# Ignore iOS project-specific files
-example/ios/Runner.xcodeproj/
-example/ios/Flutter/
-example/ios/Runner/AppDelegate.swift
-example/ios/Runner.xcworkspace/
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
