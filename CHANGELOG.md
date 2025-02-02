@@ -21,3 +21,7 @@
 ## [0.1.4] - 2022-11-08
 
 * Minor bug fixes.
+
+## [1.0.0] - 2025-02-02
+
+* Upgrade and bug fixes.
