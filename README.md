@@ -4,7 +4,7 @@
 </p>
 <p align="center">
 <a href="https://pub.dev/packages/flutter_survey"><img src="https://img.shields.io/pub/v/flutter_survey.svg?" alt="Pub"></a>
-<a href="https://codemagic.io/apps/6358c75dd690310147230fea/6358c75dd690310147230fe9/latest_build"><img src="https://api.codemagic.io/apps/6358c75dd690310147230fea/6358c75dd690310147230fe9/status_badge.svg" alt="License: MIT"></a>
+<a href="https://codemagic.io/app/6358c75dd690310147230fea/build/679f5223970337b1e26d4ceb"><img src="https://api.codemagic.io/apps/6358c75dd690310147230fea/6358c75dd690310147230fe9/status_badge.svg" alt="License: MIT"></a>
 <a href="https://github.com/flutter/packages/tree/main/packages/flutter_lints"><img src="https://img.shields.io/badge/style-flutter_lints-40c4ff.svg" alt="style: flutter lints"></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 
