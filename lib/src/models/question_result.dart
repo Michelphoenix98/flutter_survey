@@ -18,8 +18,7 @@ class QuestionResult extends Equatable {
       : answers = answers ?? [],
         children = [];
 
-  factory QuestionResult.fromJson(Map<String, dynamic> json) =>
-      _$QuestionResultFromJson(json);
+  factory QuestionResult.fromJson(Map<String, dynamic> json) => _$QuestionResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionResultToJson(this);
 

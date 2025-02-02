@@ -36,15 +36,12 @@ class Question extends Equatable {
       List<String>? answers})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
-        assert(
-            properties != null && answerChoices!.isEmpty || properties == null);
+        assert(properties != null && answerChoices!.isEmpty || properties == null);
 
-  factory Question.fromJson(Map<String, dynamic> json) =>
-      _$QuestionFromJson(json);
+  factory Question.fromJson(Map<String, dynamic> json) => _$QuestionFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  List<Object?> get props =>
-      [question, singleChoice, answerChoices, isMandatory];
+  List<Object?> get props => [question, singleChoice, answerChoices, isMandatory];
 }

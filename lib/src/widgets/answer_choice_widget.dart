@@ -9,8 +9,7 @@ class AnswerChoiceWidget extends StatefulWidget {
   ///The parameter that contains the data pertaining to a question.
   final Question question;
 
-  const AnswerChoiceWidget(
-      {Key? key, required this.question, required this.onChange})
+  const AnswerChoiceWidget({Key? key, required this.question, required this.onChange})
       : super(key: key);
 
   @override
@@ -22,11 +21,9 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
   Widget build(BuildContext context) {
     if (widget.question.answerChoices.isNotEmpty) {
       if (widget.question.singleChoice) {
-        return SingleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+        return SingleChoiceAnswer(onChange: widget.onChange, question: widget.question);
       } else {
-        return MultipleChoiceAnswer(
-            onChange: widget.onChange, question: widget.question);
+        return MultipleChoiceAnswer(onChange: widget.onChange, question: widget.question);
       }
     } else {
       return SentenceAnswer(
@@ -44,8 +41,7 @@ class SingleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
-  const SingleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+  const SingleChoiceAnswer({Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override
@@ -97,8 +93,7 @@ class MultipleChoiceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
-  const MultipleChoiceAnswer(
-      {Key? key, required this.onChange, required this.question})
+  const MultipleChoiceAnswer({Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override
@@ -148,8 +143,7 @@ class SentenceAnswer extends StatefulWidget {
 
   ///The parameter that contains the data pertaining to a question.
   final Question question;
-  const SentenceAnswer(
-      {Key? key, required this.onChange, required this.question})
+  const SentenceAnswer({Key? key, required this.onChange, required this.question})
       : super(key: key);
 
   @override

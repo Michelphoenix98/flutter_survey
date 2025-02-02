@@ -13,8 +13,8 @@ class Survey extends StatefulWidget {
   final List<Question> initialData;
 
   ///Function that returns a custom widget that is to be rendered as a field, preferably a [FormField]
-  final Widget Function(BuildContext context, Question question,
-      void Function(List<String>) update)? builder;
+  final Widget Function(
+      BuildContext context, Question question, void Function(List<String>) update)? builder;
 
   ///An optional method to call with the questions answered so far.
   final void Function(List<QuestionResult> questionResults)? onNext;
@@ -22,11 +22,7 @@ class Survey extends StatefulWidget {
   ///A parameter to configure the default error message to be shown when validation fails.
   final String? defaultErrorText;
   const Survey(
-      {Key? key,
-      required this.initialData,
-      this.builder,
-      this.defaultErrorText,
-      this.onNext})
+      {Key? key, required this.initialData, this.builder, this.defaultErrorText, this.onNext})
       : super(key: key);
   @override
   State<Survey> createState() => _SurveyState();
@@ -42,8 +38,7 @@ class _SurveyState extends State<Survey> {
 
   @override
   void initState() {
-    _surveyState =
-        widget.initialData.map((question) => question.clone()).toList();
+    _surveyState = widget.initialData.map((question) => question.clone()).toList();
 
     if (widget.builder != null) {
       builder = widget.builder!;
@@ -52,8 +47,8 @@ class _SurveyState extends State<Survey> {
             key: /* ValueKey(model.hashCode)*/ ObjectKey(model),
             question: model,
             update: update,
-            defaultErrorText: model.errorText ??
-                (widget.defaultErrorText ?? "This field is mandatory*"),
+            defaultErrorText:
+                model.errorText ?? (widget.defaultErrorText ?? "This field is mandatory*"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           );
     }
@@ -87,15 +82,13 @@ class _SurveyState extends State<Survey> {
     List<QuestionResult> list = [];
     for (int i = 0; i < questionNodes.length; i++) {
       if (_isAnswered(questionNodes[i])) {
-        var child = QuestionResult(
-            question: questionNodes[i].question,
-            answers: questionNodes[i].answers);
+        var child =
+            QuestionResult(question: questionNodes[i].question, answers: questionNodes[i].answers);
         list.add(child);
 
         for (var answer in questionNodes[i].answers) {
           if (_hasAssociatedQuestionList(questionNodes[i], answer)) {
-            child.children.addAll(
-                _mapCompletionData(questionNodes[i].answerChoices[answer]!));
+            child.children.addAll(_mapCompletionData(questionNodes[i].answerChoices[answer]!));
           }
         }
       }
@@ -113,12 +106,10 @@ class _SurveyState extends State<Survey> {
         widget.onNext?.call(_mapCompletionData(_surveyState));
       });
       list.add(child);
-      if (_isAnswered(questionNodes[i]) &&
-          _isNotSentenceQuestion(questionNodes[i])) {
+      if (_isAnswered(questionNodes[i]) && _isNotSentenceQuestion(questionNodes[i])) {
         for (var answer in questionNodes[i].answers) {
           if (_hasAssociatedQuestionList(questionNodes[i], answer)) {
-            list.addAll(
-                _buildChildren(questionNodes[i].answerChoices[answer]!));
+            list.addAll(_buildChildren(questionNodes[i].answerChoices[answer]!));
           }
         }
       }
