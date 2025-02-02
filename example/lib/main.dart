@@ -77,27 +77,29 @@ class _MyHomePageState extends State<MyHomePage> {
             question: "Do you like drinking Tea then?",
             answerChoices: {
               "Yes": [
-                Question(question: "What are the brands that you've tried?", answerChoices: {
-                  "Nestle": null,
-                  "ChaiBucks": null,
-                  "Indian Premium Tea": [
-                    Question(
-                      question: "Did you enjoy visiting IPT?",
-                      answerChoices: {
-                        "Yes": [
-                          Question(
-                            question: "Please tell us why you like it",
-                          )
-                        ],
-                        "No": [
-                          Question(
-                            question: "Please tell us what went wrong",
-                          )
-                        ],
-                      },
-                    )
-                  ],
-                })
+                Question(
+                    question: "What are the brands that you've tried?",
+                    answerChoices: {
+                      "Nestle": null,
+                      "ChaiBucks": null,
+                      "Indian Premium Tea": [
+                        Question(
+                          question: "Did you enjoy visiting IPT?",
+                          answerChoices: {
+                            "Yes": [
+                              Question(
+                                question: "Please tell us why you like it",
+                              )
+                            ],
+                            "No": [
+                              Question(
+                                question: "Please tell us what went wrong",
+                              )
+                            ],
+                          },
+                        )
+                      ],
+                    })
               ],
               "No": null,
             },
@@ -105,11 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       },
     ),
-    Question(question: "What age group do you fall in?", isMandatory: true, answerChoices: const {
-      "18-20": null,
-      "20-30": null,
-      "Greater than 30": null,
-    })
+    Question(
+        question: "What age group do you fall in?",
+        isMandatory: true,
+        answerChoices: const {
+          "18-20": null,
+          "20-30": null,
+          "Greater than 30": null,
+        })
   ];
   @override
   Widget build(BuildContext context) {

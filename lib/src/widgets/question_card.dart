@@ -48,18 +48,24 @@ class QuestionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(top: 24, right: 20, left: 20, bottom: 6),
+                    padding: const EdgeInsets.only(
+                        top: 24, right: 20, left: 20, bottom: 6),
                     child: RichText(
                       text: TextSpan(
                           text: question.question,
                           style: Theme.of(context).textTheme.bodyLarge,
                           children: question.isMandatory
-                              ? [const TextSpan(text: "*", style: TextStyle(color: Colors.red))]
+                              ? [
+                                  const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(color: Colors.red))
+                                ]
                               : null),
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(left: 4, right: 20, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(
+                          left: 4, right: 20, top: 6, bottom: 6),
                       child: AnswerChoiceWidget(
                           question: question,
                           onChange: (value) {
@@ -69,7 +75,8 @@ class QuestionCard extends StatelessWidget {
                           })),
                   if (state.hasError)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       child: Text(
                         state.errorText!,
                         style: const TextStyle(color: Colors.red),
